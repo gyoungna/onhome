@@ -1,0 +1,14 @@
+package com.example.demo.mapper;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.example.demo.vo.UserVO;
+
+@Mapper
+public interface UserMapper {
+	 static void insertUser(UserVO user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

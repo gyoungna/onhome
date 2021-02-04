@@ -1,0 +1,7 @@
+#MYSQL
+spring.datasource.url=jdbc:mysql://localhost:3306/test1
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=root
+spring.datasource.password=jng980330!
+#mybatis
+mybatis.mapper-locations=classpath*:mapper/*.xml
