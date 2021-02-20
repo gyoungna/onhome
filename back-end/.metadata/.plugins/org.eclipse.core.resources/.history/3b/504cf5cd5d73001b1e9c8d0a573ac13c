@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.example.demo.mapper.OmrMapper">
+ 	
+ 	
+ 	  <select id="Omrlist" resultType="com.example.demo.vo.OmrVO"
+      parameterType="HashMap">
+         SELECT * FROM omr where ban=#{ban} and cod=#{cod}
+         order by num desc;
+     </select>
+     
+     <delete id="deleteOmr" parameterType="HashMap">
+         DELETE FROM omr
+         WHERE ban=#{ban} and cod=#{cod} and num=#{num}
+     </delete>
+     
+
+     
+     
+ </mapper>
