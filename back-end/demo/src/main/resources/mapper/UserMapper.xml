@@ -17,6 +17,13 @@
          WHERE id = #{id}
      </select>
      
+      <select id="UserList" resultType="com.example.demo.vo.UserVO"
+      parameterType="HashMap">
+         SELECT * FROM users
+         WHERE cod=#{cod} and ban=#{ban}
+         ORDER BY id asc
+     </select>
+     
      <select id="userAuthList" resultType="com.example.demo.vo.UserVO"
       parameterType="string">
 		SELECT * FROM users

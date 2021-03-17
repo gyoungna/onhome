@@ -9,8 +9,19 @@ class TeacherComponent extends Component{
     state={
         user:{
             banList:[]
-        }
+        },
+        temp:''
+        
      }//this.setState()할때마다 rerendering
+
+     componentWillMount(){
+        if(localStorage.getItem('auth')!='TEA'){
+            alert("권한이 없습니다.");
+            alert("로그아웃됩니다.");
+            this.logout(null);
+            
+        }
+    }
 
     componentDidMount(){
         this.setupAxiosInterceptors();
@@ -65,20 +76,26 @@ class TeacherComponent extends Component{
      
      createBan=(e)=>{//반 추가생성
          e.preventDefault();
-        let temp=this.state.user.ban+';'+String(this.state.user.banList.length+1);
-        var list=this.state.user.banList;
-        list.push(this.state.user.banList.length+1);
+        let length;
+        let temp;
+        if(this.state.user.banList==null){
+            temp=this.state.temp;
+        }
+        else{
+            temp=this.state.user.ban+';'+this.state.temp;
+        }
+
          this.setState({
             user:{
                 ...this.state.user,
                 ban:temp,
-                banList:list
 
             }
          }, ()=>{
              ApiService.updateUser(this.state.user)
          .then(res=>{
              console.log('success');
+             document.location.href="/teacher";
          })
          .catch(err=>{
              console.log('update ban fail');
@@ -92,7 +109,7 @@ class TeacherComponent extends Component{
  
    
      render(){
- 
+        
          const hStyle={
              position:"absolute",
              width:"800px",
@@ -103,7 +120,19 @@ class TeacherComponent extends Component{
  
          }
 
+         const mStyle={
+            position:"absolute",
+            width:"500px",
+            height:"300px",
+            top:"20%",
+            left:"30%",
+
+
+
+        }
+
          return(
+    <div>
      <div style={hStyle}>
      <h1 style={{ padding:"20px",textAlign:"center"}}>
      숙제 In
@@ -120,14 +149,17 @@ class TeacherComponent extends Component{
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">숙제관리</a>
     <div class="dropdown-menu" >
-    {this.state.user.banList.map(ban=>
+    <>
+    {this.state.user.banList&&this.state.user.banList.map(ban=>
         {
-           
        return  <a class="dropdown-item"  data-toggle="tab" href={"#ban"+ban}>{ban}</a>;
-    }
-    )}
+       }
+    )
+     }
+    
+    </>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#" onClick={this.createBan}>반추가</a>
+      <a class="dropdown-item" data-toggle="modal" data-target="#myModal">반추가</a>
     </div>
   </li>
   <li class="nav-item">
@@ -138,7 +170,7 @@ class TeacherComponent extends Component{
   <div class="tab-pane fade show active" id="control">
             <p><TabforUser user={this.state.user}></TabforUser></p>
  </div>
- {this.state.user.banList.map(ban=>
+ {this.state.user.banList&&this.state.user.banList.map(ban=>
         
         <div class="tab-pane fade" id={"ban"+ban}>
         <p><TabforOmr ban={ban} user={this.state.user} history={this.props.history}></TabforOmr></p>
@@ -146,6 +178,28 @@ class TeacherComponent extends Component{
 )}
 
 </div>
+ </div>
+
+ <div class="modal fade" id="myModal" style={mStyle} role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h4 class="modal-title">반 추가</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        <label style={{display:"inline-block"}}>반 이름:</label>&nbsp;
+                        <input style={{display:"inline-block", width:"100px"}} type="text" class="form-control" name="ban" value={this.state.temp} onChange={(e)=>{this.setState({temp:e.target.value});}}/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onClick={(e)=>{this.createBan(e);}}>추가</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        </div>
+                    </div>
+                </div>
+    </div>
 
  </div>
          );

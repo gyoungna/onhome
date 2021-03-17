@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.example.demo.mapper.ScoreMapper">
+ 	
+ 	
+ 	  <select id="fetchScoreById" resultType="com.example.demo.vo.ScoreVO"
+      parameterType="string">
+         SELECT * FROM score where id=#{id}
+         order by num desc;
+     </select>
+     
+    <delete id="deleteBan" parameterType="HashMap">
+         DELETE FROM score
+         WHERE ban=#{ban} and cod=#{cod}
+     </delete>
+     
+      <insert id="SubmitScore" parameterType="com.example.demo.vo.ScoreVO">
+ 		INSERT INTO score (num,ban,cod,ans_num,score,ans,id,title,expired,sub_time) VALUES
+                          (#{num},#{ban},#{cod},#{ans_num},#{score},#{ans},#{id},#{title},#{expired}, #{sub_time})
+ 	</insert>
+ 	
+ 	<select id="DoneList" resultType="com.example.demo.vo.ScoreVO"
+      parameterType="HashMap">
+         SELECT * FROM score where cod=#{cod} and ban=#{ban} and num=#{num}
+         order by id asc;
+     </select>
+ 	
+ </mapper>

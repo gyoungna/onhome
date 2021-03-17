@@ -1,4 +1,5 @@
 
+import ErrorBoundary from './component/route/ErrorBoundary';
 import AppRouter from './component/route/RouterComponent';
 
 
@@ -6,7 +7,10 @@ import AppRouter from './component/route/RouterComponent';
 function App() {
   return (
     <div>
-      <AppRouter />
+      <ErrorBoundary>
+        <AppRouter />
+      </ErrorBoundary>
+      
     </div>
   );
 }

@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import ApiService from "../../ApiService";
-import LoginComponent from "../users/LoginComponent";
 import axios from 'axios';
-import {Form,Button,h1} from 'react-bootstrap';
+
 
 export default class TabforUser extends Component{
 
@@ -60,18 +59,34 @@ export default class TabforUser extends Component{
         })
 
     }
-    update=(e,user,ban)=>{
+    update=(e,user)=>{
         e.preventDefault();
         user.auth='STU';
-        user.ban=ban;
+
+        if(!user.ban){
+            alert('반을 지정해주세요');
+            return ;
+        }
         ApiService.updateUser(user)
         .then(res=>{
-            console.log('update auth 성공');
+            alert('변경되었습니다.');
+            //console.log(user.ban);
             this.reload();
         })
         .catch(err=>{
             console.log('update err');
         })
+
+    }
+
+    onChange=(e,user)=>{
+        console.log(e.target.value);
+
+        if(e.target.value!='-')
+        user.ban=e.target.value;
+        else{
+            user.ban=null;
+        }
 
     }
 
@@ -105,27 +120,33 @@ export default class TabforUser extends Component{
       <td>{user.id}</td>
       <td>{user.name}</td>
       <td>{user.email}</td>
-      <td><select multiple="" class="form-control" id="select1">
-        {this.state.user.banList.map(ban=>
+      <td><select multiple="" class="form-control" onChange={(e)=>{this.onChange(e,user)}}>
+          <option>-</option>
+        {this.state.user.banList&&this.state.user.banList.map(ban=>
         <option>{ban}</option>
         )}
       </select></td>
-      <td><button type="button" class="btn btn-primary disabled btn-sm" onClick={(e)=>{ let ban=document.getElementById('select1'); ban=ban.options[ban.selectedIndex].value; this.update(e,user,ban);}}>승인</button></td>
+      <td><button type="button" class="btn btn-primary disabled btn-sm" onClick={(e)=>{this.update(e,user);}}>승인</button></td>
       <td><button type="button" class="btn btn-primary disabled btn-sm" onClick={(e)=>{this.deleteUser(e,user);}}>거절</button></td>
       <td>-</td>
       <td>-</td>
     </tr>
       )}
-      {this.state.users.map(user=> 
+      {this.state.users.map(user=>{
+
+          let no=user.ban==null?<option selected="selected">-</option>:null;
+      return( 
   <tr class="table-default" >
       <td>{user.id}</td>
       <td>{user.name}</td>
       <td>{user.email}</td>
-      <td><select multiple="" class="form-control" id="select2">
+      <td><select multiple="" class="form-control" id="select2" onChange={(e)=>{this.onChange(e,user)}}>
+          {no}
         {this.state.user.banList.map(ban=>
         {
-            if(ban==user.ban)
+            if(ban==user.ban){
             return <option selected="selected">{ban}</option>;
+        }
             else
             return <option>{ban}</option>;
         }
@@ -135,9 +156,9 @@ export default class TabforUser extends Component{
       <td>-</td>
       <td>-</td>
       <td><button type="button" class="btn btn-primary disabled btn-sm" onClick={(e)=>{this.deleteUser(e,user);}}>탈퇴</button></td>
-      <td><button type="button" class="btn btn-primary disabled btn-sm" onClick={(e)=>{let ban=document.getElementById('select2'); ban=ban.options[ban.selectedIndex].value; this.update(e,user,ban);}}>변경</button></td>
+      <td><button type="button" class="btn btn-primary disabled btn-sm" onClick={(e)=>{this.update(e,user);}}>변경</button></td>
     </tr>
-      )}
+      );})}
     </tbody>
 </table>
 </div>

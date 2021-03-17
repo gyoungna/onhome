@@ -14,18 +14,18 @@ public class UserVO {
 	     String email;
 	     String auth;
 	     String ban; 
-	     int banList[];
+	     String banList[];
 	     int cod;
 	 
 	public void setBanList() {
 		String[] splited=ban.split(";");
-		banList=new int[splited.length];
+		banList=new String[splited.length];
 		for(int i=0;i<splited.length;i++) {
-			banList[i]=Integer.parseInt(splited[i]);
+			banList[i]=splited[i];
 			
 		}
 	}
-	public int[] getBanList() {
+	public String[] getBanList() {
 		return this.banList;
 	}
 }

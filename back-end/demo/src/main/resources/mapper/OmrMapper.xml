@@ -18,6 +18,11 @@
          WHERE ban=#{ban} and cod=#{cod} and num=#{num}
      </delete>
      
+     <delete id="deleteBan" parameterType="HashMap">
+         DELETE FROM omr
+         WHERE ban=#{ban} and cod=#{cod} 
+     </delete>
+     
      <select id="getOmr" resultType="com.example.demo.vo.OmrVO"
       parameterType="HashMap">
          SELECT * FROM omr 
@@ -25,6 +30,15 @@
      </select>
      
 
+      <update id="updateOmr" parameterType="HashMap">
+         UPDATE omr
+         SET correct=#{correct}, cocount=#{cocount} , expired=#{expired}
+         WHERE ban=#{ban} and cod=#{cod} and num=#{num}
+     </update>
      
-     
+     <insert id="insertOmr" parameterType="com.example.demo.vo.OmrVO">
+ 		INSERT INTO omr (correct, ban,cod,title,cocount,expired) VALUES
+                          (#{correct},#{ban},#{cod},#{title},#{cocount},#{expired})
+ 	</insert>
+ 	
  </mapper>

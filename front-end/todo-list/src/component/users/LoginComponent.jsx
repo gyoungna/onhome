@@ -79,7 +79,7 @@ class LoginComponent extends Component{
               this.props.history.push('/admin');
           }
           else if(window.localStorage.getItem('auth')=='STU'){
-              this.props.history.pusth('/student');
+              this.props.history.push('/student');
           }
           else{
               alert('아직 승인되지 않은 회원입니다.');
@@ -106,6 +106,8 @@ class LoginComponent extends Component{
             transform:"translate(-50%,-50%)",
 
         }
+
+
         return(
     <div style={hStyle}>
     <h1 style={{borderBottom:"1px solid #56cc9d", padding:"10px"}}>

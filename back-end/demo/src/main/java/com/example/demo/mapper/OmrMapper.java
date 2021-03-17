@@ -13,4 +13,7 @@ public interface OmrMapper {
 	public List<OmrVO> Omrlist(Map<String, Object> map);
 	public void deleteOmr(Map<String, Object> map);
 	public OmrVO getOmr(Map<String, Object> map);
+	public void updateOmr(Map<String, Object> map);
+	public void insertOmr(OmrVO omr);
+	public void deleteBan(Map<String, Object> map);
 }

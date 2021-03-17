@@ -1,5 +1,8 @@
 package com.example.demo.vo;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -7,12 +10,13 @@ public class OmrVO {
 	
 	String correct;
 	int num;
-	int ban;
+	String ban;
 	int cod;
 	String title;
-	String co[];
+	String co[];//문제
 	String cocount;
-	String count[];
+	String count[];//문제번호
+	LocalDate expired;
 	
 	 
 		public void setCo() {

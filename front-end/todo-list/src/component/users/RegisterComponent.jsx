@@ -10,7 +10,8 @@ class RegisterComponent extends Component{
         auth:'',
         user:'',
         canId:false,
-        canCo:false
+        canCo:false,
+        isValidEmail:false
      }
  
     componentDidMount(){
@@ -42,6 +43,9 @@ class RegisterComponent extends Component{
         }
         else if(user.pw!=user.checkpw){
             alert('비밀번호가 일치하지 않습니다. 확인해주세요');
+        }
+        else if(!this.state.isValidEmail){
+            alert('이메일 형식이 올바르지 않습니다. 확인해주세요');
         }
         else if(this.state.auth=='NOSTU'){
             axios.get("http://localhost:8080/cod"+'/'+user.cod).then(res=>{
@@ -119,6 +123,16 @@ class RegisterComponent extends Component{
             console.log('check id fail',err);
         })
     }
+    //빈값체크
+ isEmpty=function(val){
+    if(val===""||val===null||val===undefined||val!=null&&typeof val==="object"&&!Object.keys(val).length)
+    {
+        return true;
+    }
+    else{
+        return false;
+    }
+}
     checkCod=(e)=>{
         e.preventDefault();
         if(!this.state.user.cod){
@@ -127,10 +141,10 @@ class RegisterComponent extends Component{
         }
         axios.get("http://localhost:8080/cod"+'/'+this.state.user.cod).then(res=>{
             var temp=res.data;
-            if(temp){
+            if(!this.isEmpty(temp)){
                 alert('이미 존재하는 코드입니다.');
             }
-            else if(!temp){
+            else{
                 alert('사용가능한 코드입니다.');
                 this.setState({
                     canCo:true
@@ -142,9 +156,28 @@ class RegisterComponent extends Component{
     })
     }
 
+    EmailChange=(e)=>{
+        this.setState({
+            user:{
+                ...this.state.user,
+                [e.target.name]:e.target.value
+            }
+            
+        });
+
+        var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+        if(regExp.test(this.state.user.email))
+            this.setState({isValidEmail:true}) // 형식에 맞는 경우 true 리턴
+
+
+
+    }
+
     
     render(){
-
+        let validation=null;
+        if(this.state.user.email!==undefined&&!this.state.isValidEmail)
+            validation= <small id="emailHelp" class="form-text text-muted" style={{display:"inline-block",color:"red",position:"relative"}}>올바르지 않은 이메일 형식입니다.</small>
         const auth=this.state.auth;
         let button=null;
         if(auth==='NOTEA'){
@@ -193,8 +226,10 @@ class RegisterComponent extends Component{
         </div>
         <div>
             <label style={{display:"inline-block",position:"relative",width:"140px", height:"40px"}} >Email:</label>
-            <input style={{display:"inline-block",position:"relative",width:"150px", height:"30px"}} type="email" class="form-control" name="email" value={this.state.user.email} aria-describedby="emailHelp" onChange={this.onChange}/>
+            <input style={{display:"inline-block",position:"relative",width:"150px", height:"30px"}} type="email" class="form-control" name="email" value={this.state.user.email} aria-describedby="emailHelp" onChange={this.EmailChange}/>
+            &nbsp;&nbsp;{validation}
         </div>
+       
         <div>
             <label style={{display:"inline-block",position:"relative",width:"140px", height:"40px"}}>CODE:</label>
             <input style={{display:"inline-block",position:"relative",width:"150px", height:"30px"}} type="text" class="form-control" name="cod" value={this.state.user.cod} onChange={this.onChange}/>

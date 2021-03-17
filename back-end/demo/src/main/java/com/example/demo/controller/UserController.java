@@ -69,6 +69,21 @@ public class UserController {
 			return user;
 		}
 		
+		@GetMapping("/cod/{cod}/ban/{ban}")
+		public List<UserVO> UserList(@PathVariable int cod,@PathVariable String ban)
+		{
+			System.out.println("특정 반 학생들 가져오기");
+			Map<String, Object> map=new HashMap<String, Object>();
+			map.put("cod",cod);
+			map.put("ban", ban);
+			
+			System.out.println(userMapper.UserList(map));
+			return userMapper.UserList(map);
+		}
+		
+		
+
+		
 		@DeleteMapping("/{id}")
 		public void deleteUser(@PathVariable String id) {
 			userMapper.deleteUser(id);
@@ -83,9 +98,21 @@ public class UserController {
 				user.setPw(passwordEncoder.encode(user.getPw()));
 			}
 			
-			//System.out.println(user.getBan());
+
+			System.out.println(user.getBan());
 
 			userMapper.updateUser(user);
+		}
+		
+		@PutMapping()//반삭제, 유저들 반 바꾸기 
+		public void updateAuth(@RequestBody List<UserVO> userlist) {
+			
+			System.out.println("삭제할 유저들 반바꾸기=>null");
+			for(int i=0;i<userlist.size();i++) {
+				//System.out.println(userlist.get(i));
+				userlist.get(i).setBan("");
+				userMapper.updateUser(userlist.get(i));
+			}
 		}
 		
 		
