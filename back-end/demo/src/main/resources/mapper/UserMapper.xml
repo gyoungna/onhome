@@ -7,14 +7,20 @@
  <mapper namespace="com.example.demo.mapper.UserMapper">
  	
  	<insert id="insertUser" parameterType="com.example.demo.vo.UserVO">
- 		INSERT INTO users (id,pw,name,email,auth,cod) VALUES
-                          (#{id},#{pw},#{name},#{email},#{auth},#{cod})
+ 		INSERT INTO users (id,pw,name,email,auth,cod,authkey) VALUES
+                          (#{id},#{pw},#{name},#{email},#{auth},#{cod},#{authkey})
  	</insert>
  	
  	  <select id="fetchUserByID" resultType="com.example.demo.vo.UserVO"
       parameterType="string">
          SELECT * FROM users
          WHERE id = #{id}
+     </select>
+     
+      <select id="getUserByEmail" resultType="com.example.demo.vo.UserVO"
+      parameterType="string">
+         SELECT * FROM users
+         WHERE email = #{email}
      </select>
      
       <select id="UserList" resultType="com.example.demo.vo.UserVO"
@@ -24,7 +30,7 @@
          ORDER BY id asc
      </select>
      
-     <select id="userAuthList" resultType="com.example.demo.vo.UserVO"
+     <select id="userListByAuth" resultType="com.example.demo.vo.UserVO"
       parameterType="string">
 		SELECT * FROM users
 		WHERE auth=#{auth}

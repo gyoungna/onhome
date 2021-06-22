@@ -24,19 +24,26 @@ import com.example.demo.vo.ScoreVO;
 @RequestMapping("/score")
 public class ScoreController {
 	
-	@Autowired
+
 	ScoreMapper ScoreMapper;
+	
+	
+	@Autowired
+	public ScoreController(ScoreMapper ScoreMapper)
+	{
+		this.ScoreMapper=ScoreMapper;
+	}
 	
 
 	@GetMapping("/id/{id}")
-	@ResponseBody//user가져오기
+	@ResponseBody//점수 가져오기
 	public List<ScoreVO> fetchScoreById(@PathVariable String id){
 		return ScoreMapper.fetchScoreById(id);
 		
 	}
 	
 	@GetMapping("/cod/{cod}/ban/{ban}/num/{num}")
-	@ResponseBody//user가져오기
+	@ResponseBody
 	public List<ScoreVO> DoneList(@PathVariable int cod,@PathVariable String ban,@PathVariable int num){
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("cod",cod);

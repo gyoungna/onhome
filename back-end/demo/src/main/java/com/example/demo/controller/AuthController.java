@@ -7,6 +7,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,17 +23,25 @@ import com.example.demo.vo.UserVO;
 @RestController
 public class AuthController {
 	
-	@Autowired
+	
 	AuthenticationManager authenticationManager;
 	
-	@Autowired
 	UserMapper mapper;
 	
-	@Autowired
 	PasswordEncoder passwordEncoder;
 	
-	@Autowired
 	jwtTokenProvider provider;
+	
+	@Autowired
+	public AuthController(AuthenticationManager authenticationManager,UserMapper mapper,PasswordEncoder passwordEncoder,jwtTokenProvider provider)
+	{
+	
+		this.authenticationManager=authenticationManager;
+		this.mapper=mapper;
+		this.passwordEncoder=passwordEncoder;
+		this.provider=provider;
+	}
+	
 	
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginrequest){
@@ -44,6 +54,31 @@ public class AuthController {
 		UserVO user=mapper.fetchUserByID(loginrequest.getId());
 		String jwt=provider.generateToken(authentication);
 		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,user));
+	}
+	
+	
+	 @GetMapping("/signUpConfirm/email/{email}/authkey/{authkey}")//이메일 인증
+	 public String signUpConfirm(@PathVariable String email,@PathVariable String authkey){
+		 
+		 UserVO user=mapper.getUserByEmail(email);
+		
+		 
+		 if(user.getAuthkey().contentEquals(authkey)) {
+			 if(user.getAuth().contentEquals("NOSTU"))
+			 {
+				 user.setAuth("STU");
+				 mapper.updateUser(user);
+				 return "인증되었습니다.";
+			 }
+			 else if(user.getAuth().contentEquals("NOTEA"))
+			 {
+				 user.setAuth("TEA");
+				 mapper.updateUser(user);
+				 return "인증되었습니다.";
+			 }
+		 }
+		return null;
+
 	}
 
 }

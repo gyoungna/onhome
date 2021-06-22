@@ -27,17 +27,19 @@ import com.example.demo.vo.UserVO;
 @RequestMapping("/omr")
 public class OmrController {
 
-		@Autowired
 		OmrMapper omrMapper;
 		
 
-		
-		
+		@Autowired
+		public OmrController(OmrMapper omrMapper)
+		{
+			this.omrMapper=omrMapper;
+		}
 		
 		
 		@GetMapping("/cod/{cod}/ban/{ban}")
-		@ResponseBody//user가져오기
-		public List<OmrVO> fetchUserById(@PathVariable int cod, @PathVariable String ban){
+		@ResponseBody//omr가져오기
+		public List<OmrVO> fetchOmrByCodnBan(@PathVariable int cod, @PathVariable String ban){
 			
 			Map<String, Object> map=new HashMap<String, Object>();
 			map.put("cod",cod);
@@ -45,11 +47,8 @@ public class OmrController {
 			
 
 			List<OmrVO> temp= omrMapper.Omrlist(map);
-			for(int i=0;i<temp.size();i++) {
-				temp.get(i).setCo();
-				temp.get(i).setCount();
-				//System.out.println(temp.get(i).getExpired());
-			}
+			
+			System.out.println(temp);
 			
 			return temp;
 		}
@@ -84,7 +83,7 @@ public class OmrController {
 			
 			
 			OmrVO omr= omrMapper.getOmr(map);
-			omr.setCo();
+			//System.out.println(omr);
 			return omr;
 			
 		}

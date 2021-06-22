@@ -21,22 +21,27 @@ import com.example.demo.vo.CodVO;
 @RequestMapping("/cod")
 public class CodController {
 	
-	@Autowired
 	CodMapper CodMapper;
 	
-	@DeleteMapping("/{cod}")
-	public void deleteUser(@PathVariable int cod) {
+	@Autowired
+	public CodController(CodMapper CodMapper)
+	{
+		this.CodMapper=CodMapper;
+	}
+	
+	@DeleteMapping("/{cod}")//반 삭제(코드 삭제)
+	public void deleteCod(@PathVariable int cod) {
 		CodMapper.deleteCod(cod);
 		
 	}
 	@GetMapping("/{cod}")
-	@ResponseBody
-	public Integer fetchUserById(@PathVariable int cod){
-		System.out.println(CodMapper.fetchCod(cod));
+	@ResponseBody//코드 가져오기
+	public Integer fetchCod(@PathVariable int cod){
+		//System.out.println(CodMapper.fetchCod(cod));
 		return CodMapper.fetchCod(cod);
 	}
 	
-	@PostMapping
+	@PostMapping//코드 생성
 	public void insertCod(@RequestBody CodVO vo) {
 		
 			int cod=vo.getCod();

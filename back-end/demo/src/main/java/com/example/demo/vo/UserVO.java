@@ -14,10 +14,11 @@ public class UserVO {
 	     String email;
 	     String auth;
 	     String ban; 
-	     String banList[];
+	     //String banList[];
 	     int cod;
-	 
-	public void setBanList() {
+	     String authkey;
+	     
+	/*public void setBanList() {
 		String[] splited=ban.split(";");
 		banList=new String[splited.length];
 		for(int i=0;i<splited.length;i++) {
@@ -27,5 +28,5 @@ public class UserVO {
 	}
 	public String[] getBanList() {
 		return this.banList;
-	}
+	}*/
 }

@@ -13,12 +13,12 @@ public class OmrVO {
 	String ban;
 	int cod;
 	String title;
-	String co[];//문제
+	//String co[];//문제
 	String cocount;
-	String count[];//문제번호
+	//String count[];//문제번호
 	LocalDate expired;
 	
-	 
+	 /*
 		public void setCo() {
 			String[] splited=correct.split(";");
 			co=new String[splited.length];
@@ -40,6 +40,6 @@ public class OmrVO {
 		}
 		public String[] getCount() {
 			return this.count;
-		}
+		}*/
 
 }

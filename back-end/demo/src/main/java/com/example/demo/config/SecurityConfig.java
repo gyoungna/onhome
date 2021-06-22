@@ -27,11 +27,18 @@ import com.example.demo.security.JwtAuthenticationFilter;
 		prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	@Autowired
+	
 	CustomUserDetailsService customUserDetailsService;
 	
-	@Autowired
+	
 	private JwtAuthenticationEntryPoint unauthorizeHandler;
+	
+	@Autowired
+	public SecurityConfig(CustomUserDetailsService customUserDetailsService,JwtAuthenticationEntryPoint unauthorizeHandler)
+	{
+		this.customUserDetailsService=customUserDetailsService;
+		this.unauthorizeHandler=unauthorizeHandler;
+	}
 	
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {
