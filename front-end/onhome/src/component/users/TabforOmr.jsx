@@ -82,8 +82,13 @@ export default class TabforOmr extends Component{
         .then(res=>{
         axios.get("http://localhost:8080/users/cod/"+this.state.user.cod+"/ban/"+this.state.ban)
         .then(res=>{
-                //console.log(res.data);
-                axios.put("http://localhost:8080/users",res.data)
+               var i=0; 
+            for(;i<res.data.length;i++)
+            {
+                res.data[i].ban="";
+
+            }
+                axios.put("http://localhost:8080/users/ban/"+this.state.ban,res.data)
                 .then(res=>{
                     axios.delete("http://localhost:8080/omr/cod/"+this.state.user.cod+"/ban/"+this.state.ban)
                     .then(res=>{

@@ -54,16 +54,7 @@ class PwComponent extends Component{
     }
 
     updatePw=(e)=>{
-        axios.get("http://localhost:8080/users/"+this.state.user.id+'/pw/'+this.state.original)
-        .then(res=>{
-            this.setState({
-                encode:res.data
-            })
-        })
-        .catch(err=>{
-            console.log('get pw fail');
-        })
-
+     
         if(!this.state.original||!this.state.change||!this.state.onemore){
             alert('입력되지 않은 란이 있습니다. 입력해주세요');
         }
@@ -88,7 +79,14 @@ class PwComponent extends Component{
                 ApiService.updateUser(this.state.user)
                 .then(res=>{
                     alert('비밀번호가 변경되었습니다.')
-                    this.props.history.push('/admin');
+                    if(this.state.user.auth=='ADM')
+                    {
+                        this.props.history.push('/admin');
+                    }
+                    else if(this.state.user.auth=='TEA')
+                        this.props.history.push('/teacher');
+                    else
+                        this.props.history.push('/student');
                 })
                 .catch(err=>{
                     alert('비밀번호 변경 실패');

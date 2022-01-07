@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
 public class MailConfig {
+	
 	@Bean
 	public JavaMailSender JavaMailSender() {
 		Properties properties = new Properties(); 

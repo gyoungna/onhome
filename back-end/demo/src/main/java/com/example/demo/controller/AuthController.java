@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.example.demo.vo.JwtAuthenticationResponse;
 import com.example.demo.vo.LoginRequest;
 import com.example.demo.vo.UserVO;
 
+@CrossOrigin(origins="*", maxAge=3600)
 @RestController
 public class AuthController {
 	
@@ -43,20 +45,23 @@ public class AuthController {
 	}
 	
 	
+	
+	//로그인
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginrequest){
 		
+		//로그인
 		Authentication authentication=authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginrequest.getId(),loginrequest.getPw()));
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		UserVO user=mapper.fetchUserByID(loginrequest.getId());
-		String jwt=provider.generateToken(authentication);
-		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,user));
+		String jwt=provider.generateToken(authentication);//jwt생성
+		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,user));//jwt반환
 	}
 	
-	
+	/*
 	 @GetMapping("/signUpConfirm/email/{email}/authkey/{authkey}")//이메일 인증
 	 public String signUpConfirm(@PathVariable String email,@PathVariable String authkey){
 		 
@@ -80,5 +85,5 @@ public class AuthController {
 		return null;
 
 	}
-
+*/
 }

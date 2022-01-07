@@ -57,11 +57,11 @@ class EditComponent extends Component{
         ApiService.updateUser(this.state.user)
         .then(res=>{
             alert('회원 정보가 변경되었습니다.')
-            if(this.state.user.auth='ADM')
+            if(this.state.user.auth=='ADM')
             {
                 this.props.history.push('/admin');
             }
-            else if(this.state.user.auth='TEA')
+            else if(this.state.user.auth=='TEA')
                 this.props.history.push('/teacher');
             else
                 this.props.history.push('/student');

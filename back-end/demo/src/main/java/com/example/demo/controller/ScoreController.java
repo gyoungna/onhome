@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.mapper.ScoreMapper;
-import com.example.demo.vo.OmrVO;
 import com.example.demo.vo.ScoreVO;
 
 @CrossOrigin(origins="*", maxAge=3600)

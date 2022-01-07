@@ -99,7 +99,7 @@ public class OmrController {
 			map.put("correct", omr.getCorrect());
 			map.put("cocount", omr.getCocount());
 			map.put("expired", omr.getExpired());
-			System.out.println(omr.getExpired());
+			//System.out.println(omr.getExpired());
 
 			omrMapper.updateOmr(map);
 		}

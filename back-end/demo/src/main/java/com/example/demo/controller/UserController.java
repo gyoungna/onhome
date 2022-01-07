@@ -23,7 +23,8 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.vo.UserVO;
 
 @CrossOrigin(origins="*", maxAge=3600)
-@RestController
+@RestController//vs @Controller: 주로 view반환, @Responsebody 명시 필요
+               //but, @RestController: 주로 json데이터 반환, @ResponseBody 명시 필요x
 @RequestMapping("/users")
 public class UserController {
 
@@ -33,7 +34,7 @@ public class UserController {
 				
 		MailSendService mss;
 		
-		@Autowired
+		@Autowired//생성자 주입
 		public UserController(UserMapper userMapper, PasswordEncoder passwordEncoder, MailSendService mss)
 		{
 			this.userMapper=userMapper;
@@ -43,7 +44,7 @@ public class UserController {
 		
 		
 		@PostMapping
-		@ResponseBody//회원가입
+		//회원가입//**responseentity로 바꿔보자.상태코드, 오류 넣기
 		public String insertUser(@RequestBody UserVO user) {
 			String id=user.getId();
 			UserVO temp=userMapper.fetchUserByID(id);
@@ -55,6 +56,7 @@ public class UserController {
 			else {
 				user.setPw(passwordEncoder.encode(user.getPw()));
 				
+				//authkey 생성 & 이메일 발송
 				String authKey=mss.sendAuthMail(user.getEmail());
 				user.setAuthkey(authKey);
 				
@@ -64,13 +66,12 @@ public class UserController {
 			}
 		} 
 		
-		
+		//return 값 바꿔리
 		@GetMapping("/email/{email}/authkey/{authkey}")//이메일 인증
 		 public String signUpConfirm(@PathVariable String email,@PathVariable String authkey){
 			 
 			 UserVO user=userMapper.getUserByEmail(email);
-			 //System.out.println("제발ㅜㅜ");
-			 
+			
 			 if(user.getAuthkey().contentEquals(authkey)) {
 				 if(user.getAuth().contentEquals("NOSTU"))
 				 {
@@ -91,14 +92,13 @@ public class UserController {
 	
 		
 		@GetMapping("/auth/{auth}")
-		@ResponseBody//auth별 user
+		//auth별 user
 		public List<UserVO> userListByAuth(@PathVariable String auth){
-			//System.out.println(userMapper.userAuthList(auth));
+			
 			return userMapper.userListByAuth(auth);
 		}
 		
 		@GetMapping("/{id}")
-		@ResponseBody
 		public UserVO fetchUserById(@PathVariable String id){
 			
 			UserVO user=userMapper.fetchUserByID(id);
@@ -111,7 +111,6 @@ public class UserController {
 		
 		
 		@GetMapping("/email/{email}")
-		@ResponseBody
 		public UserVO getUserByEmail(@PathVariable String email){
 			
 			UserVO user=userMapper.getUserByEmail(email);
@@ -120,10 +119,11 @@ public class UserController {
 			return user;
 		}
 		
+		
 		@GetMapping("/cod/{cod}/ban/{ban}")
 		public List<UserVO> UserList(@PathVariable int cod,@PathVariable String ban)
 		{
-			System.out.println("특정 반 학생들 가져오기");
+			//System.out.println("특정 반 학생들 가져오기");
 			Map<String, Object> map=new HashMap<String, Object>();
 			map.put("cod",cod);
 			map.put("ban", ban);
@@ -133,7 +133,8 @@ public class UserController {
 		}
 		
 		
-
+		//@PathVariable: delete/{id}의 형태의 url에서 구분자를 이용하여 파라미터 가져옴
+		//@RequestParam: delete?no=1 의 형태의 url에서 파라미터를(파라미터 이름으로) 가져옴
 		
 		@DeleteMapping("/{id}")
 		public void deleteUser(@PathVariable String id) {
@@ -146,23 +147,23 @@ public class UserController {
 			
 			UserVO temp=userMapper.fetchUserByID(user.getId());
 			if(!temp.getPw().contentEquals(user.getPw())) {//비밀번호 변경시 암호화..
+				
 				user.setPw(passwordEncoder.encode(user.getPw()));
 			}
 			
-
-			//System.out.println(user.getBan());
-
+			
+			
 			userMapper.updateUser(user);
 		}
 		
 		
-		@PutMapping()//반삭제, 유저들 반 바꾸기 
-		public void updateBan(@RequestBody List<UserVO> userlist) {
+		@PutMapping("/ban/{ban}")//반삭제, 유저들 반 바꾸기 
+		public void updateBan(@PathVariable String ban,@RequestBody List<UserVO> userlist) {
 			
 			System.out.println("삭제할 유저들 반바꾸기=>null");
 			for(int i=0;i<userlist.size();i++) {
 				//System.out.println(userlist.get(i));
-				userlist.get(i).setBan("");
+				//userlist.get(i).setBan("");
 				userMapper.updateUser(userlist.get(i));
 			}
 		}
@@ -170,17 +171,17 @@ public class UserController {
 		
 		@GetMapping("/{id}/pw/{pw}")
 		@ResponseBody
-		public boolean EncodePw(@PathVariable String id,@PathVariable String pw) {
+		public boolean IsSamePw(@PathVariable String id,@PathVariable String pw) {
 			
 			//Map<String, Boolean> map=new HashMap<String,Boolean>();
 			UserVO temp=userMapper.fetchUserByID(id);
 			boolean result=passwordEncoder.matches(pw, temp.getPw());
+			//System.out.println("여기");
 			
 			return result;
 		}
 		
 		@GetMapping("/auth/{auth}/cod/{cod}")
-		@ResponseBody
 		public List<UserVO> StudentList(@PathVariable String auth,@PathVariable int cod){
 			Map<String, Object> map=new HashMap<String, Object>();
 			map.put("auth",auth);

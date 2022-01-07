@@ -12,11 +12,19 @@ import org.springframework.web.servlet.mvc.method.annotation.PrincipalMethodArgu
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.vo.UserVO;
 
+
+//사용자 이름을 통해 사용자의 데이터를 로드하는 서비스 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 	
-	@Autowired
+	
 	UserMapper mapper;
+	
+	@Autowired
+	public CustomUserDetailsService(UserMapper mapper)
+	{
+		this.mapper=mapper;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -16,7 +16,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
-//jwt 생성 및 검증
+//jwt 생성, request시 header안의 jwt 유효성 검증
 @Component
 public class jwtTokenProvider{
 	
@@ -50,6 +50,7 @@ public class jwtTokenProvider{
 		
 		return claims.getSubject();
 	}
+	
 	public boolean validateToken(String authToken) {
 		try {
 			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);

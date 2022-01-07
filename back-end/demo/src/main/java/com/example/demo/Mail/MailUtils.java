@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 
-//메세지 메일 발송 및 설정
+//메세지 메일 내용 및 설정
 public class MailUtils {
 	private JavaMailSender mailSender;
     private MimeMessage message;

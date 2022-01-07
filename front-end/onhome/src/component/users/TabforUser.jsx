@@ -34,7 +34,7 @@ export default class TabforUser extends Component{
           var notusers=[];
           var users=[];
           stu.map(stu=>{
-            if(stu.ban){
+            if(stu.auth=="STU"){
                 users.push(stu);
             }
             else{
@@ -140,7 +140,15 @@ export default class TabforUser extends Component{
       )}
       {this.state.users.map(user=>{
 
-          let no=user.ban==null?<option selected="selected">-</option>:null;
+          var no;
+          if(!user.ban)
+          {
+             no=<option selected="selected">-</option>;
+          }
+          else{
+            no=null;
+          }
+
       return( 
   <tr class="table-default" >
       <td>{user.id}</td>
@@ -150,12 +158,15 @@ export default class TabforUser extends Component{
           {no}
         {this.state.banList.map(ban=>
         {
+           
             if(ban==user.ban){
             return <option selected="selected">{ban}</option>;
-        }
+            }
             else
             return <option>{ban}</option>;
+           
         }
+
             
         )}
       </select></td>

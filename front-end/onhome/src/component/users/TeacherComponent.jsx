@@ -27,15 +27,24 @@ class TeacherComponent extends Component{
         ApiService.loadUser(localStorage.getItem('authenticatedUser'))
         .then(res=>{
             
-            this.setState({
-                user:res.data,
-                banList:res.data.ban.split(';')
-            })
+            if(res.data.ban)
+            {
+                this.setState({
+                    user:res.data,
+                    banList:res.data.ban.split(';')
+                })
+            }
+            else{
+                this.setState({
+                    user:res.data
+                })
+            }
+            
 
 
         })
         .catch(err=>{
-            console.log('load error');
+            console.log('load error:'+err);
         })
 
         
@@ -131,6 +140,8 @@ class TeacherComponent extends Component{
 
 
         }
+
+        console.log(this.state.user.id);
 
          return(
     <div>

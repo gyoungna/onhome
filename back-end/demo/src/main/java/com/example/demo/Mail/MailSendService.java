@@ -12,16 +12,17 @@ import org.springframework.stereotype.Service;
 @Service("mss")
 public class MailSendService {
 	
-
     private JavaMailSender mailSender;
+		
+	private int size;
 	
 	@Autowired
-	public MailSendService(JavaMailSender mailSender)
-	{
-		this.mailSender=mailSender;
+	public MailSendService(JavaMailSender ms) {
+		this.mailSender=ms;
+		
 	}
 	
-	private int size;
+	
 
     //인증키 생성
     private String getKey(int size) {

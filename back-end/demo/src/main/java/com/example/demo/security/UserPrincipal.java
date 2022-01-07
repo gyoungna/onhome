@@ -13,7 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.demo.vo.UserVO;
 
 
-//
+//인증 요청하는 객체
+//스프링 시큐리티는 이 객체에 저장된 정보를 이용해서 인증과 권한부여를 수행함
 public class UserPrincipal implements UserDetails {
 	
 	/**
@@ -49,24 +50,28 @@ public class UserPrincipal implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
+	
 	//계정이 만료되지 않았는가
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
 	//계정이 잠기지 않았는가
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
 	//패스워드 만료되지 않았는가
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
 	//계정이 활성화 되었는가
 	@Override
 	public boolean isEnabled() {

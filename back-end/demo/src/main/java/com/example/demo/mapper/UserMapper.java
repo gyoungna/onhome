@@ -14,8 +14,8 @@ public interface UserMapper {
 	  public void updateUser(UserVO user);
 	  public void deleteUser(String id);
 	  public List<UserVO> userListByAuth(String auth);
-	public List<UserVO> StudentList(Map<String, Object> map);
-	public List<UserVO> UserList(Map<String, Object> map);
-	public UserVO getUserByEmail(String email);
+	  public List<UserVO> StudentList(Map<String, Object> map);
+	  public List<UserVO> UserList(Map<String, Object> map);
+	  public UserVO getUserByEmail(String email);
 
 }
